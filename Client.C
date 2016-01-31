@@ -1,17 +1,4 @@
-/*
- * Client.c
- *
- *  Created on: Jan 22, 2016
- *      Author: felixamoruwa
- */
-
-/**
- * Parameters: 1) Portname 2) Server
- * i.e. ./client1 -port 18732 -server 127.0.0.1
- * Result: Server should return: 1) "foo.txt" with contents "You lose!"
- */
-
-/* file: client.c class: 18-732, Spring 2016, assignment: Homework 2
+/* file: client.c class: 18-732, Spring 2015, assignment: Homework 2
 */
 
 /* Obligatory includes */
@@ -34,22 +21,32 @@
 
 
 int main(int argc, char** argv)
+{
+	char reqstring[1000] =
+		"IMG:abcd.jpg;LAT:57.64911;LON:10.40744;CAP:Good morning!";
 
+	int PORTNUM;
+	char SERVER_IP[16];
+
+	int sock, nbytes, i, total, s;
+	char request[1000];
+	char recvline[1000];
+	struct sockaddr_in srv;
 
 	/* Create Foo.txt file */
-	printf("\nWriting Foo.txt...");
+		printf("\nWriting Foo.txt...");
 
-	char c[1000] = "You lose!";
-	FILE *fptr;
-	fptr=fopen("foo.txt","w");
-	if(fptr==NULL){
-		printf("Error!");
-		exit(1);
-	}
-	fprintf(fptr,c);
-	fclose(fptr);
+		char c[1000] = "You lose!";
+		FILE *fptr;
+		fptr=fopen("foo.txt","w");
+		if(fptr==NULL){
+			printf("Error!");
+			exit(1);
+		}
+		fprintf(fptr,c);
+		fclose(fptr);
 
-	printf("\nFoo.txt with payload has been created.");
+		printf("\nFoo.txt with payload has been created.");
 
 	/* Set up some defaults for if you don't enter any parameters */
 	PORTNUM = 18732;
@@ -107,22 +104,7 @@ int main(int argc, char** argv)
 		total = total + nbytes;
 	}
 
-
-
-
-
 	printf("The response of the server is:\n");
-/*
-	printf("Add Foo.txt and contents to the request payload");
-
-	FILE *fp;
-	char ch;
-	fp=fopen("foo.txt","w");
-	printf("\nEnter data to be stored in to the file:");
-	while((ch=getchar())!=EOF)
-		putc(ch,fp);
-	fclose(fp);
-*/
 
 	/* Get and output the response */
 	nbytes = 0;
@@ -130,7 +112,6 @@ int main(int argc, char** argv)
 		recvline[nbytes] = 0;
 		printf("%s\n", recvline);
 	}
-
 
 
 	return(0);
